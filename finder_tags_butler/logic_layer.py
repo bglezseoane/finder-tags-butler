@@ -16,7 +16,7 @@ import json
 import os
 from typing import Union, List
 
-from finder_tags_butler.tags_logic import (
+from finder_tags_butler.logic_tags import (
     get_finder_tags_for_path,
     add_finder_tag_for_path,
 )

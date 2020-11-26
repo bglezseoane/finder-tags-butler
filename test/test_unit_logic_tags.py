@@ -10,19 +10,19 @@
 # Contact: garaje@glezseoane.es
 ###########################################################
 
-"""Finder Tags Butler test suite."""
+"""Finder Tags Butler test suite: unit tests for tags logic"""
 
 import tempfile
 import unittest
 from unittest import TestCase
 
-from finder_tags_butler.tags_logic import (
+from finder_tags_butler.logic_tags import (
     add_finder_tag_for_path,
     get_finder_tags_for_path,
 )
 
 
-class UnitTestSuite(TestCase):
+class UnitTestSuiteLogicTags(TestCase):
     def test_set_and_get_tag_on_file(self):
         """Test get and set Finder tags.
 
