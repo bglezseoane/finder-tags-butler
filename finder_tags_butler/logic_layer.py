@@ -19,6 +19,7 @@ from typing import Union, List
 from finder_tags_butler.logic_tags import (
     get_finder_tags_for_path,
     add_finder_tag_for_path,
+    rm_all_finder_tags_for_path,
 )
 
 
@@ -107,10 +108,9 @@ def dump_manifest(manifest_path: str, path: str) -> None:
     # Get all the child files and folders recursively
     children = _get_children_of_path(path)
 
-    # # First clean all the tags of the node
-    # for child in children:
-    #     rm_finder_tag_for_path(child)
-    # TODO: Active previous cleanning
+    # First clean all the tags of the node
+    for child in children:
+        rm_all_finder_tags_for_path(child)
 
     # Set new tags
     for child in manifest.content:
