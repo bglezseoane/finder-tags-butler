@@ -56,3 +56,12 @@ def rm_finder_tag_for_path(path: str, tag: str) -> None:
     :param tag: The tag name to remove.
     """
     mac_tag.remove(tag, path)
+
+
+def rm_all_finder_tags_for_path(path: str) -> None:
+    """Remove all existent Finder tags for a given file or folder.
+
+    :param path: The path of the file of folder to edit.
+    """
+    tags = get_finder_tags_for_path(path)
+    mac_tag.remove(tags, path)
