@@ -21,8 +21,8 @@ import mac_tag
 def get_finder_tags_for_path(path: str) -> [dict]:
     """Returns the Finder tags for a given file or folder.
 
-    :param path: the path of the file of folder to examine.
-    :raise FileNotFoundError: if the path does not points to anything reachable.
+    :param path: The path of the file of folder to examine.
+    :raise FileNotFoundError: If the path does not points to anything reachable.
     :return: A list of tags as a dict with their titles and colors names.
     """
     try:
@@ -40,9 +40,8 @@ def get_finder_tags_for_path(path: str) -> [dict]:
 def add_finder_tag_for_path(path: str, tag: str) -> None:
     """Set a Finder tag for a given file or folder.
 
-    :param path: the path of the file of folder to edit.
-    :param tag: the tag name to set.
-    :raise FileNotFoundError: if the path does not points to anything reachable.
+    :param path: The path of the file of folder to edit.
+    :param tag: The tag name to set.
     """
     if tag:
         mac_tag.add(tag, path)
@@ -53,8 +52,16 @@ def add_finder_tag_for_path(path: str, tag: str) -> None:
 def rm_finder_tag_for_path(path: str, tag: str) -> None:
     """Remove a Finder tag for a given file or folder.
 
-    :param path: the path of the file of folder to edit.
-    :param tag: the tag name to remove.
-    :raise FileNotFoundError: if the path does not points to anything reachable.
+    :param path: The path of the file of folder to edit.
+    :param tag: The tag name to remove.
     """
     mac_tag.remove(tag, path)
+
+
+def rm_all_finder_tags_for_path(path: str) -> None:
+    """Remove all existent Finder tags for a given file or folder.
+
+    :param path: The path of the file of folder to edit.
+    """
+    tags = get_finder_tags_for_path(path)
+    mac_tag.remove(tags, path)
