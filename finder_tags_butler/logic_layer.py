@@ -18,6 +18,7 @@ from typing import Union, List
 
 import yaml
 
+from finder_tags_butler import properties
 from finder_tags_butler.logic_tags import (
     get_finder_tags_for_path,
     add_finder_tag_for_path,
@@ -60,6 +61,7 @@ class Manifest:
         :param path: The param of the output file.
         """
         with open(path, "w") as outfile:
+            outfile.writelines(properties.MANIFEST_HEAD_COMMENT)
             yaml.dump(self.content, outfile)
 
     def load(self, path: str) -> None:
