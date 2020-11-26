@@ -14,6 +14,7 @@
 
 import json
 import os
+from json import JSONEncoder
 from typing import Union, List
 
 from finder_tags_butler.logic_tags import (
@@ -30,12 +31,23 @@ class _ContentEntry:
         self.path = path
         self.tags = tags
 
+    def __lt__(self, other):
+        return self.path.__lt__(other.path)
+
+
+class _DefaultEncoder(JSONEncoder):
+    """To achieve objects JSON serializable."""
+    def default(self, o):
+        return o.__dict__
+
 
 class Manifest:
     """Abstraction of a manifest."""
 
     def __init__(self, content: List[_ContentEntry] = None):
         """To load a manifest file, let 'content' set to 'None'."""
+        if content is None:
+            content = []
         self.content = content
 
     def save(self, path: str) -> None:
@@ -46,7 +58,7 @@ class Manifest:
         :param path: The param of the output file.
         """
         with open(path, "w") as outfile:
-            json.dump(self.content, outfile)
+            json.dump(self.content, outfile, cls=_DefaultEncoder)
 
     def load(self, path: str) -> None:
         """Read a 'path''s JSON file to the current 'Manifest' object.
@@ -56,7 +68,10 @@ class Manifest:
         :param path: The param of the output file.
         """
         with open(path, "r") as infile:
-            self.content = json.load(infile)
+            json_list = json.load(infile)
+
+        for i in json_list:
+            self.content.append(_ContentEntry(i["path"], i["tags"]))
 
 
 def save_manifest(path: str, manifest_path: str,) -> None:
