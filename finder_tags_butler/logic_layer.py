@@ -12,10 +12,11 @@
 
 """Business logic layer."""
 
-import json
 import os
 from json import JSONEncoder
 from typing import Union, List
+
+import yaml
 
 from finder_tags_butler.logic_tags import (
     get_finder_tags_for_path,
@@ -37,6 +38,7 @@ class _ContentEntry:
 
 class _DefaultEncoder(JSONEncoder):
     """To achieve objects JSON serializable."""
+
     def default(self, o):
         return o.__dict__
 
@@ -58,7 +60,7 @@ class Manifest:
         :param path: The param of the output file.
         """
         with open(path, "w") as outfile:
-            json.dump(self.content, outfile, cls=_DefaultEncoder)
+            yaml.dump(self.content, outfile)
 
     def load(self, path: str) -> None:
         """Read a 'path''s JSON file to the current 'Manifest' object.
@@ -68,10 +70,7 @@ class Manifest:
         :param path: The param of the output file.
         """
         with open(path, "r") as infile:
-            json_list = json.load(infile)
-
-        for i in json_list:
-            self.content.append(_ContentEntry(i["path"], i["tags"]))
+            self.content = yaml.load(infile, Loader=yaml.FullLoader)
 
 
 def save_manifest(path: str, manifest_path: str,) -> None:
