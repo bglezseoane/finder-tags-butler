@@ -21,8 +21,8 @@ import mac_tag
 def get_finder_tags_for_path(path: str) -> [dict]:
     """Returns the Finder tags for a given file or folder.
 
-    :param path: the path of the file of folder to examine.
-    :raise FileNotFoundError: if the path does not points to anything reachable.
+    :param path: The path of the file of folder to examine.
+    :raise FileNotFoundError: If the path does not points to anything reachable.
     :return: A list of tags as a dict with their titles and colors names.
     """
     try:
