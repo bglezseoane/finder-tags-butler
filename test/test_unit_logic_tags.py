@@ -19,6 +19,8 @@ from unittest import TestCase
 from finder_tags_butler.logic_tags import (
     add_finder_tag_for_path,
     get_finder_tags_for_path,
+    rm_all_finder_tags_for_path,
+    rm_finder_tag_for_path,
 )
 
 
@@ -47,10 +49,7 @@ class UnitTestSuiteLogicTags(TestCase):
             self.assertEqual(manual_tag, res_tags)
 
     def test_set_and_get_tags_on_dir(self):
-        """Test get and set Finder tags.
-
-        This version uses various tags on a directory.
-        """
+        """Test get and set Finder tags."""
         with tempfile.TemporaryDirectory() as sample_folder:
             manual_tag1 = "Sample tag 1"
             manual_tag2 = "Sample tag 2"
@@ -70,6 +69,53 @@ class UnitTestSuiteLogicTags(TestCase):
             self.assertTrue(manual_tag1 in res_tags)
             self.assertTrue(manual_tag2 in res_tags)
             self.assertTrue(manual_tag3 in res_tags)
+
+    def test_remove_tag_on_dir(self):
+        """Test remove a Finder tag."""
+        with tempfile.TemporaryDirectory() as sample_folder:
+            manual_tag1 = "Sample tag 1"
+            manual_tag2 = "Sample tag 2"
+            manual_tag3 = "Sample tag 3"
+            add_finder_tag_for_path(
+                sample_folder, manual_tag1,
+            )
+            add_finder_tag_for_path(
+                sample_folder, manual_tag2,
+            )
+            add_finder_tag_for_path(
+                sample_folder, manual_tag3,
+            )
+
+            # Remove
+            rm_finder_tag_for_path(sample_folder, manual_tag1)
+
+            res_tags = get_finder_tags_for_path(sample_folder)
+
+            self.assertTrue(manual_tag2 in res_tags)
+            self.assertTrue(manual_tag3 in res_tags)
+
+    def test_remove_all_tags_on_dir(self):
+        """Test remove all Finder tags."""
+        with tempfile.TemporaryDirectory() as sample_folder:
+            manual_tag1 = "Sample tag 1"
+            manual_tag2 = "Sample tag 2"
+            manual_tag3 = "Sample tag 3"
+            add_finder_tag_for_path(
+                sample_folder, manual_tag1,
+            )
+            add_finder_tag_for_path(
+                sample_folder, manual_tag2,
+            )
+            add_finder_tag_for_path(
+                sample_folder, manual_tag3,
+            )
+
+            # Remove
+            rm_all_finder_tags_for_path(sample_folder)
+
+            res_tags = get_finder_tags_for_path(sample_folder)
+
+            self.assertEqual(res_tags, [])
 
 
 if __name__ == "__main__":
