@@ -102,6 +102,17 @@ def run_parser() -> dict:
     return {"path": args.path, "option": opt}
 
 
-def print_error(error: Exception):
-    """Print the input error with the proper error formatting."""
+def print_ok(msg_text: str) -> None:
+    """Print the input error with the proper error formatting.
+
+    :param msg_text: The message content text.
+    """
+    print(f"{MSG_OK}: {msg_text}")
+
+
+def print_error(error: Exception) -> None:
+    """Print the input error with the proper error formatting.
+
+    :param error: The error to print.
+    """
     print(f"{MSG_ERROR}: {error.__str__()}")
