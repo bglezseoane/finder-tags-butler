@@ -64,4 +64,5 @@ def rm_all_finder_tags_for_path(path: str) -> None:
     :param path: The path of the file of folder to edit.
     """
     tags = get_finder_tags_for_path(path)
-    mac_tag.remove(tags, path)
+    for tag in tags:
+        mac_tag.remove(tag, path)
