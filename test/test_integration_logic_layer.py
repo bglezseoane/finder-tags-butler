@@ -26,13 +26,13 @@ from finder_tags_butler.logic_layer import (
     _get_children_of_path,
     save_manifest,
     dump_manifest,
-    Manifest,
 )
 from finder_tags_butler.logic_tags import (
     add_finder_tag_for_path,
     get_finder_tags_for_path,
     rm_all_finder_tags_for_path,
 )
+from finder_tags_butler.properties import MANIFEST_FILE_NAME
 
 
 class IntegrationTestSuiteLogicLayer(TestCase):
@@ -63,7 +63,7 @@ class IntegrationTestSuiteLogicLayer(TestCase):
                     add_finder_tag_for_path(tagged_children[i], additional_tag_2)
 
             # Save the manifest
-            manifest_path = os.path.join(sample_node, ".ftb")
+            manifest_path = os.path.join(sample_node, MANIFEST_FILE_NAME)
             save_manifest(sample_node, manifest_path)
 
             # Remove all the tags
