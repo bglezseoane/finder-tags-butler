@@ -19,7 +19,6 @@ from typing import Union, List
 import yaml
 
 from finder_tags_butler import properties
-from finder_tags_butler.controller_layer import order_error_printing_without_exit
 from finder_tags_butler.logic_tags import (
     get_finder_tags_for_path,
     add_finder_tag_for_path,
@@ -103,7 +102,7 @@ def save_manifest(path: str, manifest_path: str,) -> None:
 
 def dump_manifest(
     manifest_path: str, path: str, force_overwriting: Union[bool, None] = False
-) -> None:
+) -> [Exception]:
     """Dump a 'manifest_path''s manifest writing tags into the node's 'path'
     location.
 
@@ -122,6 +121,8 @@ def dump_manifest(
         manifest. Passing as 'False', they won't be removed never.
         Letting as 'None', they will be removed if the manifest
         provides from other machine.
+    :return: A list of errors of the tags that have not been correctly
+        processed.
     """
     # Assert the paths are correct and absolutely
     manifest_path = os.path.abspath(os.path.expanduser(manifest_path))
@@ -142,13 +143,16 @@ def dump_manifest(
             rm_all_finder_tags_for_path(child)
 
     # Set new tags
+    tagging_errors = []
     for child in manifest.content:
         for tag in child.tags:
             if os.path.exists(child.path):
                 add_finder_tag_for_path(child.path, tag)
             else:
-                order_error_printing_without_exit(FileNotFoundError(child.path))
+                tagging_errors.append(FileNotFoundError(child.path))
                 continue  # Do not raise exception, the full process must go on
+
+    return tagging_errors
 
 
 def _get_children_of_path(path: str) -> [str]:
