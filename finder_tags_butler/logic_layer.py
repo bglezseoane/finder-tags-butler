@@ -13,6 +13,7 @@
 """Business logic layer."""
 
 import os
+import platform
 from json import JSONEncoder
 from typing import Union, List
 
@@ -52,6 +53,7 @@ class Manifest:
         if content is None:
             content = []
         self.content = content
+        self.machine = platform.node()
 
     def save(self, path: str) -> None:
         """Save the current manifest object to a 'path''s JSON file.
@@ -62,7 +64,7 @@ class Manifest:
         """
         with open(path, "w") as outfile:
             outfile.writelines(properties.MANIFEST_HEAD_COMMENT)
-            yaml.dump(self.content, outfile)
+            yaml.dump(self, outfile)
 
     def load(self, path: str) -> None:
         """Read a 'path''s JSON file to the current 'Manifest' object.
@@ -72,7 +74,9 @@ class Manifest:
         :param path: The param of the output file.
         """
         with open(path, "r") as infile:
-            self.content = yaml.load(infile, Loader=yaml.FullLoader)
+            file_manifest = yaml.load(infile, Loader=yaml.FullLoader)
+            self.content = file_manifest.content
+            self.machine = file_manifest.machine
 
 
 def save_manifest(path: str, manifest_path: str,) -> None:
