@@ -12,6 +12,7 @@
 
 """Properties file."""
 
+MANIFEST_FILE_NAME = ".ftb"
 MANIFEST_HEAD_COMMENT = (
     "# Finder Tags Butler manifest file\n"
     "#\n"
