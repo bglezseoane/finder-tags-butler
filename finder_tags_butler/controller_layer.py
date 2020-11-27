@@ -32,7 +32,7 @@ def main():
     if opt == "save_opt":
         save_manifest(path=path, manifest_path=manifest_path)
         # If the process finish well...
-        order_ok_printing_and_exit(f"The manifest of {path} has been " f"saved. 💾")
+        order_ok_printing_and_exit(f"The manifest of '{path}' has been " f"saved. 💾")
     else:
         # Check manifest existence
         if not os.path.isfile(manifest_path):
@@ -56,7 +56,7 @@ def main():
         for tag_error in tagging_errors:
             order_error_printing_without_exit(tag_error)
         # If the process finish well...
-        order_ok_printing_and_exit(f"The manifest of {path} has been dumped. 🏷")
+        order_ok_printing_and_exit(f"The manifest of '{path}' has been dumped. 🏷")
 
 
 def order_ok_printing_and_exit(msg_text: str) -> None:
