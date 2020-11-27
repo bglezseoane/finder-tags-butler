@@ -29,10 +29,13 @@ MSG_ERROR = COLOR_RED + "[ERROR]" + COLOR_RST
 MSG_WARNING = COLOR_YELLOW + "[WARNING]" + COLOR_RST
 
 
-def run_parser() -> str:
+def run_parser() -> dict:
     parser = argparse.ArgumentParser(
         description="Finder Tags Butler",
         epilog="Synchronize Mac OS Finder tags between several machines.",
+    )
+    parser.add_argument(
+        "path", metavar="PATH", type=str, nargs="1", help="The directory where works..."
     )
     options = parser.add_mutually_exclusive_group()
     options.add_argument(
@@ -40,16 +43,16 @@ def run_parser() -> str:
         "--save",
         dest="save_opt",
         action="store_true",
-        help="Saves the tags of the current working directory to a manifest.",
+        help="Saves the tags of the 'path' directory to a manifest.",
     )
     options.add_argument(
         "-d",
         "--dump",
         dest="dump_opt",
         action="store_true",
-        help="Dumps the tags of the manifest of the current working "
+        help="Dumps the tags of the manifest of the 'path' "
         "directory. If the manifest provides from other machine, "
-        "also removes all the tags of the current working "
+        "also removes all the tags of the 'path' "
         "directory and children that are not in the manifest.",
     )
     options.add_argument(
@@ -57,7 +60,7 @@ def run_parser() -> str:
         "--soft-dump",
         dest="soft_dump_opt",
         action="store_true",
-        help="Dumps the tags of the manifest of the current working "
+        help="Dumps the tags of the manifest of the 'path' "
         "directory, but does not remove any tag present in the current "
         "working directory and children.",
     )
@@ -66,20 +69,24 @@ def run_parser() -> str:
         "--hard-dump",
         dest="hard_dump_opt",
         action="store_true",
-        help="Dumps the tags of the manifest of the current working "
-        "directory, removing all the tags of the current working "
+        help="Dumps the tags of the manifest of the 'path' "
+        "directory, removing all the tags of the 'path' "
         "directory and children that are not in the manifest.",
     )
 
     # Parse
     args = parser.parse_args()
 
-    # Interpret the orders
+    # Catch the selected option
     if args.save_opt:
-        return "save_opt"
+        opt = "save_opt"
     elif args.dump_opt:
-        return "dump_opt"
+        opt = "dump_opt"
     elif args.soft_dump_opt:
-        return "soft_dump_opt"
+        opt = "soft_dump_opt"
     elif args.hard_dump_opt:
-        return "hard_dump_opt"
+        opt = "hard_dump_opt"
+
+    # Return the full user input order
+    # noinspection PyUnboundLocalVariable
+    return {"path": args.path, "option": opt}
