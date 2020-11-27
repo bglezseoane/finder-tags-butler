@@ -32,14 +32,15 @@ def main():
     if opt == "save_opt":
         save_manifest(path=path, manifest_path=manifest_path)
         # If the process finish well...
-        order_ok_printing_without_exit(f"The manifest of {path} has been saved.")
+        order_ok_printing_without_exit(f"The manifest of {path} has been "
+                                       f"saved. 💾")
     else:
         # Check manifest existence
         if not os.path.isfile(manifest_path):
             order_error_printing_and_exit(FileNotFoundError(manifest_path))
 
         # Define the text to print on success
-        ok_msg_text = f"The manifest of {path} has been dumped."
+        ok_msg_text = f"The manifest of {path} has been dumped. 🏷"
 
         if opt == "dump_opt":
             dump_manifest(
