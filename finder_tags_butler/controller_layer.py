@@ -21,7 +21,7 @@ from finder_tags_butler.properties import MANIFEST_FILE_NAME
 
 def main():
     # First, run the parser
-    opt, path = run_parser()
+    path, opt = run_parser().values()
 
     # Calculate paths
     if not os.path.isdir(path):

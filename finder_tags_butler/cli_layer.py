@@ -99,7 +99,7 @@ def run_parser() -> dict:
 
     # Return the full user input order
     # noinspection PyUnboundLocalVariable
-    return {"path": args.path, "option": opt}
+    return {"path": args.path[0], "option": opt}
 
 
 def print_ok(msg_text: str) -> None:
