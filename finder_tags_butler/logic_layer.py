@@ -14,7 +14,6 @@
 
 import os
 import platform
-from json import JSONEncoder
 from typing import Union, List
 
 import yaml
@@ -36,13 +35,6 @@ class TagAssociation:
 
     def __lt__(self, other):
         return self.path.__lt__(other.path)
-
-
-class _DefaultEncoder(JSONEncoder):
-    """To achieve objects JSON serializable."""
-
-    def default(self, o):
-        return o.__dict__
 
 
 class Manifest:
