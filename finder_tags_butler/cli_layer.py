@@ -45,9 +45,9 @@ def run_parser() -> dict:
         epilog="Synchronize Mac OS Finder tags between several machines.",
     )
     parser.add_argument(
-        "path", metavar="PATH", type=str, nargs="1", help="The directory where works..."
+        "path", metavar="PATH", type=str, nargs=1, help="The directory where work...",
     )
-    options = parser.add_mutually_exclusive_group()
+    options = parser.add_mutually_exclusive_group(required=True)
     options.add_argument(
         "-s",
         "--save",
