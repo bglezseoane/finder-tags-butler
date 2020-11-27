@@ -108,14 +108,24 @@ def save_manifest(path: str, manifest_path: str,) -> None:
     manifest.save(manifest_path)
 
 
-def dump_manifest(manifest_path: str, path: str) -> None:
-    """Dump a 'manifest_path''s manifest overwriting tags into the node's
-    'path' location.
+def dump_manifest(
+    manifest_path: str, path: str, force_overwriting: bool = False
+) -> None:
+    """Dump a 'manifest_path''s manifest writing tags into the node's 'path'
+    location.
+
+    If the manifest provides from another machine, the tags present in the
+    target node but not in the manifest will be removed. If the manifest
+    provides from the same machine, these tags will be preserved and a warning
+    will be presented. Using the 'force_overwriting' param the first
+    behaviour can be forced.
 
     Warning: the paths should be checked before call this function.
 
     :param manifest_path: The path of the input manifest.
     :param path: The path to apply the manifest.
+    :param force_overwriting: Passing this param as 'True', the tags of the
+        target node will be totally erased before dumping the manifest.
     """
     # Assert the paths are correct and absolutely
     manifest_path = os.path.abspath(os.path.expanduser(manifest_path))
@@ -128,9 +138,10 @@ def dump_manifest(manifest_path: str, path: str) -> None:
     # Get all the child files and folders recursively
     children = _get_children_of_path(path)
 
-    # First clean all the tags of the node
-    for child in children:
-        rm_all_finder_tags_for_path(child)
+    # First clean all the tags of the node, if it apply
+    if force_overwriting or platform.node() != manifest.machine:
+        for child in children:
+            rm_all_finder_tags_for_path(child)
 
     # Set new tags
     for child in manifest.content:
