@@ -19,7 +19,7 @@ from finder_tags_butler.properties import MANIFEST_FILE_NAME
 
 def main():
     # First, run the parser
-    opt = run_parser()
+    opt, path = run_parser()
 
     # Calculate paths
     cwd = os.getcwd()
