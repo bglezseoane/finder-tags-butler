@@ -32,8 +32,7 @@ def main():
     if opt == "save_opt":
         save_manifest(path=path, manifest_path=manifest_path)
         # If the process finish well...
-        order_ok_printing_without_exit(f"The manifest of {path} has been "
-                                       f"saved. 💾")
+        order_ok_printing_without_exit(f"The manifest of {path} has been " f"saved. 💾")
     else:
         # Check manifest existence
         if not os.path.isfile(manifest_path):
