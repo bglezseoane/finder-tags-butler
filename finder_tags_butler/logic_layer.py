@@ -140,9 +140,6 @@ def dump_manifest(
         for child in children:
             rm_all_finder_tags_for_path(child)
 
-    # TODO: Detect tags that are not saved into the manifest and order
-    #  warning print
-
     # Set new tags
     for child in manifest.content:
         for tag in child.tags:
