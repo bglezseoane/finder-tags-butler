@@ -50,9 +50,13 @@ class IntegrationTestSuiteLogicLayer(TestCase):
                 )  # Random tag name
 
             # Tag children
+            additional_tag_1 = "Multiple of eleven"
+            additional_tag_2 = "Multiple of 11"
             for i in range(0, len(tagged_children)):
                 add_finder_tag_for_path(tagged_children[i], tags[i])
-                # TODO: To some items, add various tags to test it
+                if not i % 11:
+                    add_finder_tag_for_path(tagged_children[i], additional_tag_1)
+                    add_finder_tag_for_path(tagged_children[i], additional_tag_2)
 
             # Save the manifest
             manifest_path = os.path.join(sample_node, ".ftb")
@@ -66,11 +70,21 @@ class IntegrationTestSuiteLogicLayer(TestCase):
             dump_manifest(manifest_path, sample_node)
 
             # Get current state and check against the previous one
-            res_tags = []
-            for child in tagged_children:
-                res_tags.extend(get_finder_tags_for_path(child))
-
-            self.assertEqual(res_tags, tags)
+            for i in range(0, len(tagged_children)):
+                res_tags = get_finder_tags_for_path(tagged_children[i])
+                self.assertTrue(tags[i] in res_tags)
+                if not i % 11:
+                    self.assertTrue(additional_tag_1 in res_tags)
+                    self.assertTrue(additional_tag_2 in res_tags)
+                    # Achieve an empty list
+                    res_tags.remove(tags[i])
+                    res_tags.remove(additional_tag_1)
+                    res_tags.remove(additional_tag_2)
+                    self.assertFalse(res_tags)
+                else:
+                    # Achieve an empty list
+                    res_tags.remove(tags[i])
+                    self.assertFalse(res_tags)
 
 
 if __name__ == "__main__":
