@@ -30,6 +30,16 @@ MSG_WARNING = COLOR_YELLOW + "[WARNING]" + COLOR_RST
 
 
 def run_parser() -> dict:
+    """Parse the user input.
+
+    Supported options are:
+        - 'save_opt'.
+        - 'dump_opt'.
+        - 'hard_dump_opt'.
+        - 'soft_dump_opt'.
+
+    :return: A dict '{"path": args.path, "option": opt}'.
+    """
     parser = argparse.ArgumentParser(
         description="Finder Tags Butler",
         epilog="Synchronize Mac OS Finder tags between several machines.",
