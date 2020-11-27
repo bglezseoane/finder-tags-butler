@@ -14,15 +14,19 @@
 
 import os
 import random
+import socket
 import string
 import tempfile
 import unittest
 from unittest import TestCase
 
+import yaml
+
 from finder_tags_butler.logic_layer import (
     _get_children_of_path,
     save_manifest,
     dump_manifest,
+    Manifest,
 )
 from finder_tags_butler.logic_tags import (
     add_finder_tag_for_path,
@@ -68,6 +72,11 @@ class IntegrationTestSuiteLogicLayer(TestCase):
 
             # Now dump the saved manifest to restore the previous state
             dump_manifest(manifest_path, sample_node)
+
+            # Check that the machine name is correctly stored
+            with open(manifest_path, "r") as infile:
+                file_manifest = yaml.load(infile, Loader=yaml.FullLoader)
+            self.assertEqual(file_manifest.machine, socket.gethostname())
 
             # Get current state and check against the previous one
             for i in range(0, len(tagged_children)):
