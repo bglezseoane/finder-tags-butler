@@ -15,6 +15,8 @@
 import argparse
 
 # Style constants
+import sys
+
 COLOR_BOLD = "\033[1m"
 COLOR_GREEN = "\033[92m"
 COLOR_RED = "\033[91m"
@@ -100,3 +102,9 @@ def run_parser() -> dict:
     # Return the full user input order
     # noinspection PyUnboundLocalVariable
     return {"path": args.path, "option": opt}
+
+
+def raise_error_printing(error: Exception):
+    """Raise the input error with the proper error formatting."""
+    print(f"{MSG_ERROR}: {error.__str__()}")
+    sys.exit(1)
