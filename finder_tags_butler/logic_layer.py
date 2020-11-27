@@ -27,7 +27,7 @@ from finder_tags_butler.logic_tags import (
 )
 
 
-class _ContentEntry:
+class TagAssociation:
     """Abstraction of a manifest content entry."""
 
     def __init__(self, path: str, tags: Union[List[str], None]):
@@ -48,7 +48,7 @@ class _DefaultEncoder(JSONEncoder):
 class Manifest:
     """Abstraction of a manifest."""
 
-    def __init__(self, content: List[_ContentEntry] = None):
+    def __init__(self, content: List[TagAssociation] = None):
         """To load a manifest file, let 'content' set to 'None'."""
         if content is None:
             content = []
@@ -99,7 +99,7 @@ def save_manifest(path: str, manifest_path: str,) -> None:
     content = []
     for child in children:
         tags = get_finder_tags_for_path(child)
-        content.append(_ContentEntry(child, tags))
+        content.append(TagAssociation(child, tags))
 
     # Finally, create the manifest and write it to a file
     manifest = Manifest(content)
