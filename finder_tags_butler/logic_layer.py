@@ -48,7 +48,7 @@ class Manifest:
         self.machine = platform.node()
 
     def save(self, path: str) -> None:
-        """Save the current manifest object to a 'path''s JSON file.
+        """Save the current manifest object to a 'path''s YAML file.
 
         Warning: the path should be checked before call this function.
 
@@ -59,7 +59,7 @@ class Manifest:
             yaml.dump(self, outfile)
 
     def load(self, path: str) -> None:
-        """Read a 'path''s JSON file to the current 'Manifest' object.
+        """Read a 'path''s YAML file to the current 'Manifest' object.
 
         Warning: the path should be checked before call this function.
 
