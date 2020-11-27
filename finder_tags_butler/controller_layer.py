@@ -48,3 +48,7 @@ def main():
             )
         else:  # If the parser is updated with this if-block, this won't occur
             raise NotImplementedError
+
+
+def order_error_printing_without_exit(error: Exception) -> None:
+    pass

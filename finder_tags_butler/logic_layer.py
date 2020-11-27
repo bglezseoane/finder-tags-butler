@@ -19,6 +19,7 @@ from typing import Union, List
 import yaml
 
 from finder_tags_butler import properties
+from finder_tags_butler.controller_layer import order_error_printing_without_exit
 from finder_tags_butler.logic_tags import (
     get_finder_tags_for_path,
     add_finder_tag_for_path,
@@ -146,7 +147,7 @@ def dump_manifest(
             if os.path.exists(child.path):
                 add_finder_tag_for_path(child.path, tag)
             else:
-                # print("Error with this tag")  TODO
+                order_error_printing_without_exit(FileNotFoundError(child.path))
                 continue  # Do not raise exception, the full process must go on
 
 
