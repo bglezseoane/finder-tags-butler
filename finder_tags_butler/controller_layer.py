@@ -15,6 +15,7 @@
 import sys
 
 from finder_tags_butler.cli_layer import run_parser, print_error, print_ok
+from finder_tags_butler.errors import CorruptedManifestFileError
 from finder_tags_butler.logic_layer import *
 from finder_tags_butler.properties import MANIFEST_FILE_NAME
 
@@ -38,21 +39,25 @@ def main():
         if not os.path.isfile(manifest_path):
             order_error_printing_and_exit(FileNotFoundError(manifest_path))
 
-        if opt == "dump_opt":
-            tagging_errors = dump_manifest(
-                manifest_path=manifest_path, path=path, force_overwriting=None
-            )
-        elif opt == "soft_dump_opt":
-            tagging_errors = dump_manifest(
-                manifest_path=manifest_path, path=path, force_overwriting=False
-            )
-        elif opt == "hard_dump_opt":
-            tagging_errors = dump_manifest(
-                manifest_path=manifest_path, path=path, force_overwriting=True
-            )
-        else:  # If the parser is updated with this if-block, this won't occur
-            raise NotImplementedError
+        try:
+            if opt == "dump_opt":
+                tagging_errors = dump_manifest(
+                    manifest_path=manifest_path, path=path, force_overwriting=None
+                )
+            elif opt == "soft_dump_opt":
+                tagging_errors = dump_manifest(
+                    manifest_path=manifest_path, path=path, force_overwriting=False
+                )
+            elif opt == "hard_dump_opt":
+                tagging_errors = dump_manifest(
+                    manifest_path=manifest_path, path=path, force_overwriting=True
+                )
+            else:  # If the parser is updated with this if-block, this won't occur
+                raise NotImplementedError
+        except CorruptedManifestFileError as e:
+            order_error_printing_and_exit(e)
 
+        # noinspection PyUnboundLocalVariable
         for tag_error in tagging_errors:
             order_error_printing_without_exit(tag_error)
         # If the process finish well...

@@ -19,6 +19,7 @@ from typing import Union, List
 import yaml
 
 from finder_tags_butler import properties
+from finder_tags_butler.errors import CorruptedManifestFileError
 from finder_tags_butler.logic_tags import (
     get_finder_tags_for_path,
     add_finder_tag_for_path,
@@ -123,12 +124,15 @@ def dump_manifest(
         provides from other machine.
     :return: A list of errors of the tags that have not been correctly
         processed.
+    :raise: CorruptedManifestFileError, if the manifest file is corrupted.
     """
     # Assert the paths are correct and absolutely
     manifest_path = os.path.abspath(os.path.expanduser(manifest_path))
     path = os.path.abspath(os.path.expanduser(path))
 
     # Read the manifest
+    if not _validate_mainifest_file(manifest_path):  # First check integrity
+        raise CorruptedManifestFileError(manifest_path)
     manifest = Manifest()
     manifest.load(manifest_path)
 
@@ -144,13 +148,16 @@ def dump_manifest(
 
     # Set new tags
     tagging_errors = []
-    for child in manifest.content:
-        for tag in child.tags:
-            if os.path.exists(child.path):
-                add_finder_tag_for_path(child.path, tag)
-            else:
-                tagging_errors.append(FileNotFoundError(child.path))
-                continue  # Do not raise exception, the full process must go on
+    try:
+        for child in manifest.content:
+            for tag in child.tags:
+                if os.path.exists(child.path):
+                    add_finder_tag_for_path(child.path, tag)
+                else:
+                    tagging_errors.append(FileNotFoundError(child.path))
+                    continue  # Do not raise exception, the full process must go on
+    except AttributeError:
+        raise CorruptedManifestFileError(manifest_path)
 
     return tagging_errors
 
@@ -175,3 +182,26 @@ def _get_children_of_path(path: str) -> [str]:
             children.append(os.path.join(root, file))
 
     return children
+
+
+# noinspection PyStatementEffect
+def _validate_mainifest_file(manifest_path: str) -> bool:
+    """Check the integrity of a manifest file.
+
+    :param manifest_path: The path of the manifest to validate
+    :return: True or false of the manifest is valid or not, respectively.
+    """
+    try:
+        manifest = Manifest()
+        manifest.load(manifest_path)
+
+        # Check access to all the stuff
+        manifest.machine
+        manifest.content
+        for child in manifest.content:
+            child.path
+            child.tags
+    except AttributeError:
+        return False
+
+    return True
