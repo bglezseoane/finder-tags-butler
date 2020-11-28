@@ -14,6 +14,11 @@
 
 from finder_tags_butler import controller_layer
 
-if __name__ == "__main__":
+
+def main():
     # Delegate to the controller
     controller_layer.main()
+
+
+if __name__ == "__main__":
+    main()
