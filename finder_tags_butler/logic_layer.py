@@ -92,7 +92,8 @@ def save_manifest(path: str, manifest_path: str,) -> None:
     content = []
     for child in children:
         tags = get_finder_tags_for_path(child)
-        content.append(TagAssociation(child, tags))
+        if not tags == []:
+            content.append(TagAssociation(child, tags))
 
     # Finally, create the manifest and write it to a file
     manifest = Manifest(content)
