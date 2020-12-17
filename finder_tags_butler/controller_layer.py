@@ -15,7 +15,6 @@
 import sys
 
 from finder_tags_butler.cli_layer import run_parser, print_error, print_ok
-from finder_tags_butler.errors import CorruptedManifestFileError
 from finder_tags_butler.logic_layer import *
 from finder_tags_butler.properties import MANIFEST_FILE_NAME
 
