@@ -15,7 +15,6 @@
 import sys
 
 from finder_tags_butler.cli_layer import run_parser, print_error, print_ok
-from finder_tags_butler.errors import CorruptedManifestFileError
 from finder_tags_butler.logic_layer import *
 from finder_tags_butler.properties import MANIFEST_FILE_NAME
 
@@ -33,7 +32,10 @@ def main():
     if opt == "save_opt":
         save_manifest(path=path, manifest_path=manifest_path)
         # If the process finish well...
-        order_ok_printing_and_exit(f"The manifest of '{path}' has been " f"saved. 💾")
+        order_ok_printing_and_exit(
+            f"The manifest of '{os.path.basename(os.path.abspath(path))}'"
+            f" has been saved. 💾"
+        )
     else:
         # Check manifest existence
         if not os.path.isfile(manifest_path):
@@ -61,7 +63,10 @@ def main():
         for tag_error in tagging_errors:
             order_error_printing_without_exit(tag_error)
         # If the process finish well...
-        order_ok_printing_and_exit(f"The manifest of '{path}' has been dumped. 🏷")
+        order_ok_printing_and_exit(
+            f"The manifest of '{os.path.basename(os.path.abspath(path))}' "
+            f"has been dumped. 🏷"
+        )
 
 
 def order_ok_printing_and_exit(msg_text: str) -> None:

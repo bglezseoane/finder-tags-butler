@@ -9,7 +9,7 @@ colorama==0.4.4
 docutils==0.16
 idna==2.10
 keyring==21.5.0
-mac-tag==0.0.0
+mac-tag
 packaging==20.5
 pathspec==0.8.1
 pkginfo==1.6.1
@@ -29,5 +29,5 @@ tqdm==4.54.0
 twine==3.2.0
 typed-ast==1.4.1
 urllib3==1.26.2
-values==0.0.0
+values
 webencodings==0.5.1
