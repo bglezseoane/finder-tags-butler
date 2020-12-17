@@ -16,7 +16,7 @@ from setuptools import setup
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
-version = "0.1.dev1"
+version = "0.1.dev2"
 
 setup(
     name="finder-tags-butler",
